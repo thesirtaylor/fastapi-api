@@ -4,11 +4,16 @@ from app.db import Base
 from fastapi_utils.guid_type import GUID_DEFAULT_SQLITE
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declared_attr
+import uuid
+
+def new_uuid():
+    x = str(uuid.uuid4())
+    return x
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID, primary_key=True, default=GUID_DEFAULT_SQLITE, index=True)
+    id = Column(String, primary_key=True, default=new_uuid, index=True)
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
