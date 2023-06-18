@@ -1,9 +1,6 @@
 import bcrypt
-from sqlalchemy import TIMESTAMP, Column, Integer, String, DateTime, func
+from sqlalchemy import Column, String, DateTime, func
 from app.db import Base
-from fastapi_utils.guid_type import GUID_DEFAULT_SQLITE
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import declared_attr
 import uuid
 
 def new_uuid():
@@ -21,7 +18,6 @@ class User(Base):
     updatedAt = Column(DateTime, default=func.now(), onupdate=func.now())
 
     def set_password(self, password: str):
-        # Implement your password hashing logic here
         password_to_bytes = password.encode('utf-8')
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password_to_bytes, salt)
