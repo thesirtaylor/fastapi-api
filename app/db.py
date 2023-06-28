@@ -1,9 +1,9 @@
 import logging
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./d_b.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///data_base.db"
 
 # Create the engine and database connection
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -13,25 +13,16 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Define the Base Class for declarative models
 Base = declarative_base()
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 #Dependency to get a database session
 def get_db():
    
         db = SessionLocal()
+        sql_expression =   text("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY NOT NULL, username TEXT UNIQUE, email TEXT UNIQUE,password TEXT, createdAt DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')),updatedAt DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')))")
         try:
             db.execute(
-                """
-                CREATE TABLE IF NOT EXISTS users (
-                id TEXT PRIMARY KEY NOT NULL,
-        username TEXT UNIQUE,
-        email TEXT UNIQUE,
-        password TEXT,
-        createdAt DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')),
-        updatedAt DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
-                )
-
-                """
+              sql_expression
             )
             logging.info("Database connected successfully!")
             yield db
