@@ -33,16 +33,16 @@ def client():
 
 def test_create_user(db):
     user = create_user(db, user = UserCreate(username=username, email=email, password=password))
-    assert user.username == "testuser"
-    assert user.email == email
+    assert user.username == "testuser" # type: ignore
+    assert user.email == email # type: ignore
 
 
 def test_get_user(db):
     user = create_user(db, user = UserCreate(username="firsttestcase", email="firsttestemail@email.com", password=password))
     retrieved_user = get_user(db, user_id=str(user.id))
-    assert retrieved_user.id == user.id
-    assert retrieved_user.username == "firsttestcase"
-    assert retrieved_user.email == "firsttestemail@email.com"
+    assert retrieved_user.id == user.id # type: ignore
+    assert retrieved_user.username == "firsttestcase" # type: ignore
+    assert retrieved_user.email == "firsttestemail@email.com" # type: ignore
 
 
 def test_update_user(db):
@@ -51,10 +51,10 @@ def test_update_user(db):
     oldusername = user.username
     updated_user = update_user(db, user_id=str(user.id), user = UserUpdate(username="updateduser", email="secondtestemail@example.com", password="thenewPassword"))
     print(updated_user.email, updated_user.username, updated_user.password)
-    assert updated_user.username == "updateduser"
-    assert oldemail != updated_user.email
-    assert oldusername != updated_user.username
-    assert updated_user.email == "secondtestemail@example.com"
+    assert updated_user.username == "updateduser" # type: ignore
+    assert oldemail != updated_user.email # type: ignore
+    assert oldusername != updated_user.username # type: ignore
+    assert updated_user.email == "secondtestemail@example.com" # type: ignore
 
 
 def test_delete_user(db):
